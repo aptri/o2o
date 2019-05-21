@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link href="../../login/fonts/font.css" th:href="@{/login/fonts/font.css}" rel="stylesheet">
+    <link href="../../login/css/font-awesome.min.css" th:href="@{/login/css/font-awesome.min.css}" rel="stylesheet">
+    <link href="../../login/css/landingpage.css" th:href="@{/login/css/landingpage.css}" rel="stylesheet">
+    <link href="../../login/css/signin.css" th:href="@{/login/css/signin.css}" rel="stylesheet">
+    <script src="../../js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+    <script src="../../js/jquery-form.js" th:src="@{/js/jquery-form.js}"></script>
+    <script src="../../js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body class>
+<div class="outer-wrapper" id="site-LandingPage">
+    <div class="with-newsletter" data-reactroot>
+        <div id="main-layout" class="layout no-sidebar">
+            <div id="wrapper">
+                <div id="page-content-wrapper">
+                    <div>
+                        <div class="jumbotron hero">
+                            <div id="jumbo-bg" class="bg"
+                                 style="background:url(/static/login/image/bg_login.jpg) no-repeat center"></div>
+                            <form class="form-signin" th:object="${userDto}" th:action="@{/user/userLogin}"
+                                  id="login_form">
+                                <h2 class="form-signin-heading">请登录</h2>
+                                <label for="login_username" class="sr-only">username</label>
+                                <input type="text" id="login_username" class="form-control" placeholder="user name">
+                                <label for="login_password" class="sr-only">password</label>
+                                <input type="password" id="login_password" class="form-control" placeholder="password">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="remember-me"> Remember me
+                                    </label>
+                                </div>
+                                <div class="btn-group">
+                                    <div class="btn-group-vertical">
+                                        <button class="btn btn-lg btn-primary btn-sm" type="button"
+                                                th:onclick="|loginSubmit();|">登陆
+                                        </button>
+                                    </div>
+                                    <div class="btn-group-vertical">
+                                        <button class="btn btn-lg btn-primary btn-sm" type="button"
+                                                th:onclick="|showUserRegister();|">注册
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="registerView">
+</div>
+</div>
+</body>
+</html>
+<script th:inline="javascript">
+    function showUserRegister() {
+        $.ajax({
+            type: "POST",
+            url: /*[[@{/login/toRegister}]]*/"",
+            timeout: 10000,
+            dataType: "html",
+            beforeSend: function () {
+                $("#registerView").empty();
+            },
+            success: function (data) {
+                $("#registerView").html(data);
+                $("#reg-modal").modal("show");
+            }
+        });
+    }
+
+    function loginSubmit() {
+        window.location.href = /*[[@{/login/toIndex}]]*/"";
+    }
+</script>

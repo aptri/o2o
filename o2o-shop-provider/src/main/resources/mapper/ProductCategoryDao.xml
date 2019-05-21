@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.o2o.dao.ProductCategoryDao">
+    <!--<resultMap id="resultAreaList" type="com.imooc.o2o.dto.ProductCategoryDto">-->
+        <!--<id column="area_id" property="areaId"></id>-->
+        <!--<result property="areaName" column="AREA_NAME"></result>-->
+        <!--<result property="areaDesc" column="AREA_DESC"></result>-->
+        <!--<result property="priority" column="PRIORITY"></result>-->
+        <!--<result property="createTime" column="CREATE_TIME"></result>-->
+        <!--<result property="lastEditTime" column="LAST_EDIT_TIME"></result>-->
+    <!--</resultMap>-->
+    <select id="queryProductCategory" resultType="com.imooc.o2o.dto.ProductCategoryDto">
+        select
+        PRODUCT_CATEGORY_ID,
+        PRODUCT_CATEGORY_NAME,
+        PRODUCT_CATEGORY_DESC,
+        PRIORITY,
+        CREATE_TIME,
+        LAST_EDIT_TIME,
+        SHOP_ID
+        from t_product_category t
+    </select>
+</mapper>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>o2o</title>
+    <meta name="description" content="MSUI: Build mobile apps with simple HTML, CSS, and JS components.">
+    <meta name="author" content="阿里巴巴国际UED前端">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <!-- Google Web Fonts -->
+    <link rel="stylesheet" href="../../dist/css/sm.css" th:href="@{/dist/css/sm.css}">
+    <link rel="stylesheet" href="../../dist/css/sm-extend.css" th:href="@{/dist/css/sm-extend.css}">
+    <link rel="stylesheet" href="../../assets/css/demos.css" th:href="@{/assets/css/demos.css}">
+
+    <!--<link rel="apple-touch-icon-precomposed" href="../../assets/img/apple-touch-icon-114x114.png">-->
+    <script src="../../assets/js/zepto.js" th:src="@{/assets/js/zepto.js}"></script>
+    <script src="../../assets/js/config.js" th:src="@{/assets/js/config.js}"></script>
+    <script th:src="@{/js/category/category.js}"></script>
+</head>
+<body>
+<body>
+<div class="page-group">
+    <div id="page-songs-list" class="page">
+        <header class="bar bar-nav">
+            <a class="button button-link button-nav pull-left back" href="/demos/list">
+                <span class="icon icon-left"></span>
+                返回
+            </a>
+            <a id="toAddView" class="button button-link button-nav pull-right">
+                添加
+                <span class="icon icon-right"></span>
+            </a>
+            <h1 class="title">类别列表</h1>
+        </header>
+        <div class="content">
+            <div class="list-block media-list">
+                <ul th:each="category:${shopCategoryList}">
+                    <li>
+                        <a id="${category.shopCategoryId}" th:onclick="|editView(${category.shopCategoryId});|" class="item-link item-content">
+                            <input type="hidden" id="shopCategoryId" name="shopCategoryId" th:value="${category.shopCategoryId}">
+                            <div class="item-media"><img src="" th:src="${category.shopCategoryImg}" width="80"></div>
+                            <div class="item-inner">
+                                <div class="item-title-row">
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <div class="item-title">类别名称:</div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <span th:text="${category.shopCategoryName}"></label></span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="item-subtitle">优先级:</div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <span th:text="${category.priority}"></span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="item-subtitle">描述:</div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <span th:text="${category.shopCategoryDesc}"></span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" th:text="${category.lastEditTime}">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../../dist/js/sm.js" th:src="@{/dist/js/sm.js}"></script>
+<script src="../../dist/js/sm-extend.js" th:src="@{/dist/js/sm-extend.js}"></script>
+<script src="../../dist/js/sm-city-picker.js" th:src="@{/dist/js/sm-city-picker.js}"></script>
+<script src="../../assets/js/demos.js" th:src="@{/assets/js/demos.js}"></script>
+</body>
+</body>
+</html>

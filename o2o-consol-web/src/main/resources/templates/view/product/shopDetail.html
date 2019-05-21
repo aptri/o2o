@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>商铺注册</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+    <link rel="stylesheet" th:href="@{/dist/css/button-style.css}">
+    <script src="../../js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+    <script src="../../js/jquery-form.js" th:src="@{/js/jquery-form.js}"></script>
+    <script type="text/javascript" th:src="@{/js/product/product.js}"></script>
+<body>
+<div class="page-group">
+    <div id="page-songs-list" class="page">
+        <header class="bar bar-nav">
+            <a class="button button-link button-nav pull-left back" href="/demos/list" th:onclick="|backShopList();|">
+                <span class="icon icon-left"></span>
+                返回
+            </a>
+            <a id="addView" class="button button-link button-nav pull-right" th:onclick="|addView();|">
+                添加
+                <span class="icon icon-right"></span>
+            </a>
+            <h1 class="title">商店详情</h1>
+        </header>
+        <div class="content">
+            <input type="hidden" id="shopId" name="shopId" th:value="${shop.shopId}">
+            <div class="card demo-card-header-pic">
+                <div valign="bottom" class="card-content">
+                    <div class="card-content-inner">
+                        <p th:text="${shop.shopName}"></p>
+                        <p th:text="${shop.shopDesc}"></p>
+                        <p th:text="${shop.shopAddr}"></p>
+                        <p th:text="${shop.phone}"></p>
+                    </div>
+                </div>
+                <div class="card-header color-white no-border no-padding">
+                    <img class='card-cover' src="" th:src="${shop.shopImg}" alt="">
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">本店产品列表:</div>
+                <div>
+
+                </div>
+                <div class="card-content">
+                    <div th:if="${#lists.isEmpty(productList)}">
+                        <p>本店还未添加商品哦，敬请期待!</p>
+                    </div>
+                    <div class="list-block media-list" th:each="product:${productList}">
+                        <ul>
+                            <li class="item-content">
+                                <a id="${product.productId}" th:onclick="|editView(${product.productId});|" class="item-link item-content">
+                                    <input type="hidden" id="productId" name="productId" th:value="${product.productId}">
+                                    <div class="item-media"><img src="" th:src="${product.imgAddr}" width="80"></div>
+                                    <div class="item-inner">
+                                        <div class="item-title-row">
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <div class="item-title">商品名称:</div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="item-after">
+                                                            <span th:text="${product.productName}"></span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="item-subtitle">商品原价:</div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="item-after">
+                                                            <span th:text="${product.normalPrice}"></span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="item-subtitle">商品促销价:</div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="item-after">
+                                                            <span th:text="${product.promotionPrice}"></span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="item-title">状态:</div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="item-after"
+                                                             th:switch="${#strings.toString(product.enableStatus)}">
+                                                            <span th:case="'0'"><label style="color: red">未上架</label></span>
+                                                            <span th:case="'1'"><label style="color: blue">已上架</label></span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+</body>
+</html>

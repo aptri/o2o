@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.o2o.dao.PersonInfoDao">
+    <resultMap id="resultUserList" type="com.imooc.o2o.entity.PersonInfo">
+        <id column="USER_ID" property="userId"></id>
+        <result column="NAME" property="name"></result>
+        <result column="PROFILE_IMG" property="profileImg"></result>
+        <result column="EMAIL" property="email"></result>
+        <result column="GENDER" property="grender"></result>
+        <result column="BIRTHDAY" property="birthday"></result>
+        <result column="PHONE" property="phone"></result>
+        <result column="ENABLE_STATUS" property="enableStatus"></result>
+        <result column="CREATE_TIME" property="createTime"></result>
+        <result column="LAST_EDIT_TIME" property="lastEditTime"></result>
+    </resultMap>
+    <select id="queryUser" resultMap="resultUserList">
+        select USER_ID,NAME,GENDER,PROFILE_IMG,EMAIL,CREATE_TIME,LAST_EDIT_TIME,ENABLE_STATUS
+        from T_PERSON_INFO
+    </select>
+    <select id="queryShopById" parameterType="Integer" resultMap="resultUserList">
+        select
+        shop_id,shop_name,shop_desc,shop_addr,phone,shop_img,priority,enable_status,create_time,last_edit_time,advice,user_id,shop_category_id,area_id
+        from t_shop t where t.shop_id=${shopId}
+    </select>
+    <insert id="insertShop" parameterType="com.imooc.o2o.entity.Shop" keyColumn="shop_id">
+        <selectKey keyProperty="shopId" resultType="long" order="BEFORE">
+            select shop_sequence.nextval from dual
+        </selectKey>
+        insert into
+        t_shop(shop_id,shop_name,shop_desc,shop_addr,phone,shop_img,priority,enable_status,create_time,last_edit_time,advice,user_id,shop_category_id,area_id)
+        values (
+        #{shopId},
+        #{shopName},
+        #{shopDesc},
+        #{shopAddr},
+        #{phone},
+        #{shopImg},
+        #{priority},
+        #{enableStatus},
+        #{createTime},
+        #{lastEditTime},
+        #{advice},
+        #{user.userId},
+        #{shopCategory.shopCategoryId},
+        #{area.areaId})
+    </insert>
+</mapper>

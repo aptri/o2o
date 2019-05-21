@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>商铺注册</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+    <link rel="stylesheet" th:href="@{/dist/css/button-style.css}">
+    <script src="../../js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+    <script src="../../js/jquery-form.js" th:src="@{/js/jquery-form.js}"></script>
+    <script type="text/javascript" th:src="@{/js/product/product.js}"></script>
+<body>
+<div class="page-group">
+    <div id="page-label-input" class="page">
+        <header class="bar bar-nav">
+            <a class="button button-link button-nav pull-left back" href="/demos/form" th:onclick="|addOrEditViewBack();|">
+                <span class="icon icon-left"></span>
+                返回
+            </a>
+            <h1 class='title'>商品编辑</h1>
+        </header>
+        <div class="content">
+            <div class="list-block">
+                <form id="editForm" th:object="${dto}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" id="shopId" name="shopId" th:value="${product.shopId}">
+                    <ul>
+                        <!-- Text inputs -->
+                        <li>
+                            <div class="item-content">
+                                <div class="item-media"><i class="icon icon-form-name"></i></div>
+                                <div class="item-inner">
+                                    <div class="item-title label">商品名称</div>
+                                    <div class="item-input">
+                                        <input type="text" id="productName" name="productName" th:value="${product.productName}"
+                                               placeholder="product name">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-media"><i class="icon icon-form-email"></i></div>
+                                <div class="item-inner">
+                                    <div class="item-title label">图片添加</div>
+
+                                    <div class="item-input">
+                                        <img src="" th:src="${product.imgAddr}" id="shop_image" name="shop_image"
+                                             height="100" width="100">
+                                        <span class="button fileInput-button button-fill">
+                                        <span>Upload</span>
+                                        <input type="file" id="imageFile" name="imageFile" th:onchange="submitUpload()">
+                                    </span>
+                                        <input type="hidden" id="imgAddr" name="imgAddr" value=""
+                                               th:value="${product.imgAddr}">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-media"><i class="icon icon-form-gender"></i></div>
+                                <div class="item-inner">
+                                    <div class="item-title label">商品类别</div>
+                                    <div class="item-input">
+                                        <select name="productCategoryId" id="productCategoryId">
+                                            <option value="">--请选择--</option>
+                                            <option th:each="category:${productCategoryList}" th:selected="${category.productCategoryId==product.productCategoryId}"
+                                                    th:value="${category.productCategoryId}"
+                                                    th:text="${category.productCategoryName}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-media"><i class="icon icon-form-name"></i></div>
+                                <div class="item-inner">
+                                    <div class="item-title label">正常价格</div>
+                                    <div class="item-input">
+                                        <input type="text" id="normalPrice" name="normalPrice" th:value="${product.normalPrice}"
+                                               placeholder="normal price">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-media"><i class="icon icon-form-name"></i></div>
+                                <div class="item-inner">
+                                    <div class="item-title label">促销价价格</div>
+                                    <div class="item-input">
+                                        <input type="text" id="promotionPrice" name="promotionPrice" th:value="${product.promotionPrice}"
+                                               placeholder="promotion price">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-media"><i class="icon icon-form-name"></i></div>
+                                <div class="item-inner">
+                                    <div class="item-title label">优先级</div>
+                                    <div class="item-input">
+                                        <input type="text" id="priority" name="priority" th:value="${product.priority}"
+                                               placeholder="priority">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-media"><i class="icon icon-form-name"></i></div>
+                                <div class="item-inner">
+                                    <div class="item-title label">状态</div>
+                                    <div class="item-input">
+                                        <input type="text" id="enableStatus" name="enableStatus" th:value="${product.enableStatus}"
+                                               placeholder="status">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="align-top">
+                            <div class="item-content">
+                                <div class="item-media"><i class="icon icon-form-comment"></i></div>
+                                <div class="item-inner">
+                                    <div class="item-title label">商品描述描述</div>
+                                    <div class="item-input">
+                                        <textarea id="productDesc" name="productDesc" th:text="${product.productDesc}"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-media"><i class="icon icon-form-email"></i></div>
+                                <div class="item-inner">
+                                    <div class="item-title label">验证码</div>
+                                    <div class="item-input">
+                                        <input type="text" placeholder="验证码" th:height="30" id="captCha_in"
+                                               name="captCha_in">
+                                    </div>
+                                    <div>
+                                        <img src="../Kaptcha" alt="点击更换" title="点击更换" id="captCha_img"
+                                             onclick="changeVerifyCode(this)">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+            <div class="content-block">
+                <div class="row">
+                    <div class="col-50"><a href="#" class="button button-big button-fill button-danger">取消</a></div>
+                    <div class="col-50"><a href="#" class="button button-big button-fill button-success"
+                                           th:onclick="shopUpdate()">提交</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.o2o.dao.HeadLineDao">
+    <select id="queryHeadLine" resultType="com.imooc.o2o.dto.HeadLineDto">
+        select
+        LINE_ID,
+        LINE_NAME,
+        LINE_LINK,
+        LINE_IMG,
+        PRIORITY,
+        ENABLE_STATUS,
+        CREATE_TIME,
+        LAST_EDIT_TIME
+        from t_head_line t where t.ENABLE_STATUS=1
+    </select>
+    <select id="queryHeadLineById" parameterType="Integer" resultType="com.imooc.o2o.dto.HeadLineDto">
+        select
+        LINE_ID,
+        LINE_NAME,
+        LINE_LINK,
+        LINE_IMG,
+        PRIORITY,
+        ENABLE_STATUS,
+        CREATE_TIME,
+        LAST_EDIT_TIME
+        from t_head_line t where t.LINE_ID = #{lineId}
+    </select>
+    <insert id="insertHeadLine" parameterType="com.imooc.o2o.dto.HeadLineDto" keyColumn="line_id">
+        <selectKey keyProperty="lineId" resultType="Integer" order="BEFORE">
+            select head_line_sequence.nextval from dual
+        </selectKey>
+        insert into
+        t_head_line(
+        LINE_ID,
+        LINE_NAME,
+        LINE_LINK,
+        LINE_IMG,
+        PRIORITY,
+        ENABLE_STATUS,
+        CREATE_TIME,
+        LAST_EDIT_TIME)
+        values (
+        ${lineId},
+        #{lineName},
+        #{lineLink,jdbcType=VARCHAR},
+        #{lineImg},
+        #{priority},
+        #{enableStatus},
+        #{createTime,jdbcType=TIMESTAMP},
+        #{lastEditTime,jdbcType=TIMESTAMP})
+    </insert>
+    <update id="updateHeadLine" parameterType="com.imooc.o2o.dto.HeadLineDto">
+        update t_head_line t
+        <set>
+            <if test="lineName!=null and lineName!=''">
+                t.LINE_NAME=#{lineName},
+            </if>
+            <if test="lineLink!=null and lineLink!=''">
+                t.LINE_LINK=#{lineLink},
+            </if>
+            <if test="lineImg!=null and lineImg!=''">
+                t.LINE_IMG=#{lineImg},
+            </if>
+            <if test="priority!=null and priority!=''">
+                t.PRIORITY=${priority},
+            </if>
+            <if test="enableStatus!=null or enableStatus!=''">
+                t.ENABLE_STATUS=${enableStatus},
+            </if>
+            <if test="lastEditTime!=null">
+                t.LAST_EDIT_TIME=#{lastEditTime,jdbcType=TIMESTAMP}
+            </if>
+            where t.LINE_ID=${lineId}
+        </set>
+    </update>
+</mapper>

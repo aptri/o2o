@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.o2o.dao.ProductDao">
+
+    <select id="queryProduct" resultType="com.imooc.o2o.dto.ProductDto">
+        select
+        PRODUCT_ID,
+        PRODUCT_NAME,
+        PRODUCT_DESC,
+        IMG_ADDR,
+        NORMAL_PRICE,
+        PROMOTION_PRICE,
+        PRIORITY,
+        CREATE_TIME,
+        LAST_EDIT_TIME,
+        ENABLE_STATUS,
+        POINT,
+        PRODUCT_CATEGORY_ID,
+        SHOP_ID
+        from t_product t
+    </select>
+    <select id="queryProductByCondition" resultType="com.imooc.o2o.dto.ProductDto">
+        select
+        PRODUCT_ID,
+        PRODUCT_NAME,
+        PRODUCT_DESC,
+        IMG_ADDR,
+        NORMAL_PRICE,
+        PROMOTION_PRICE,
+        PRIORITY,
+        CREATE_TIME,
+        LAST_EDIT_TIME,
+        ENABLE_STATUS,
+        POINT,
+        PRODUCT_CATEGORY_ID,
+        SHOP_ID
+        from t_product t
+        <where>
+            <if test="productName!=null and productName!=''">
+                t.PRODUCT_NAME=#{productName}
+            </if>
+        </where>
+    </select>
+    <select id="queryProductByShopId" parameterType="Integer" resultType="com.imooc.o2o.dto.ProductDto">
+        select
+        PRODUCT_ID,
+        PRODUCT_NAME,
+        PRODUCT_DESC,
+        IMG_ADDR,
+        NORMAL_PRICE,
+        PROMOTION_PRICE,
+        PRIORITY,
+        CREATE_TIME,
+        LAST_EDIT_TIME,
+        ENABLE_STATUS,
+        POINT,
+        PRODUCT_CATEGORY_ID,
+        SHOP_ID
+        from t_product t
+        where t.SHOP_ID=${shopId}
+    </select>
+    <select id="queryProductByProductId" parameterType="Integer" resultType="com.imooc.o2o.dto.ProductDto">
+        select
+        PRODUCT_ID,
+        PRODUCT_NAME,
+        PRODUCT_DESC,
+        IMG_ADDR,
+        NORMAL_PRICE,
+        PROMOTION_PRICE,
+        PRIORITY,
+        CREATE_TIME,
+        LAST_EDIT_TIME,
+        ENABLE_STATUS,
+        POINT,
+        PRODUCT_CATEGORY_ID,
+        SHOP_ID
+        from t_product t
+        where t.PRODUCT_ID=${productId}
+    </select>
+    <update id="updateProduct" parameterType="com.imooc.o2o.dto.ProductDto">
+        update t_product t
+        <set>
+            <if test="productName!=null and productName!=''">
+            t.PRODUCT_NAME=#{productName},
+            </if>
+
+            <if test="productDesc!=null and productDesc!=''">
+                t.PRODUCT_DESC=#{productDesc},
+            </if>
+            <if test="imgAddr!=null and imgAddr!=''">
+                t.IMG_ADDR=#{imgAddr},
+            </if>
+            <if test="normalPrice!=null and normalPrice!=''">
+                t.NORMAL_PRICE=#{normalPrice},
+            </if>
+            <if test="promotionPrice!=null and promotionPrice!=''">
+                t.PROMOTION_PRICE=#{promotionPrice},
+            </if>
+            <if test="priority!=null">
+                t.PRIORITY=${priority},
+            </if>
+            <if test="createTime!=null">
+                t.CREATE_TIME=#{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastEditTime!=null">
+                t.LAST_EDIT_TIME=#{lastEditTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="enableStatus!=null">
+                t.ENABLE_STATUS=${enableStatus},
+            </if>
+            <if test="priority!=null">
+                t.POINT=${point},
+            </if>
+            <if test="productCategoryId!=null">
+                t.PRODUCT_CATEGORY_ID=${productCategoryId},
+            </if>
+            <if test="shopId!=null">
+                t.SHOP_ID=${shopId},
+            </if>
+        </set>
+    </update>
+    <insert id="insertProduct" parameterType="com.imooc.o2o.dto.ProductDto" keyProperty="productId" keyColumn="PRODUCT_ID">
+        <selectKey keyColumn="PRODUCT_ID" keyProperty="productId" resultType="Integer" order="BEFORE">
+            select product_sequence.nextval from dual
+        </selectKey>
+        insert into t_product t(
+        PRODUCT_ID,
+        PRODUCT_NAME,
+        PRODUCT_DESC,
+        IMG_ADDR,
+        NORMAL_PRICE,
+        PROMOTION_PRICE,
+        PRIORITY,
+        CREATE_TIME,
+        LAST_EDIT_TIME,
+        ENABLE_STATUS,
+        POINT,
+        PRODUCT_CATEGORY_ID,
+        SHOP_ID
+        ) values (
+        ${productId},
+        #{productName},
+        #{productDesc},
+        #{imgAddr},
+        #{normalPrice},
+        #{promotionPrice},
+        ${priority},
+        #{createTime,jdbcType=TIMESTAMP},
+        #{lastEditTime,jdbcType=TIMESTAMP},
+        ${enableStatus},
+        ${point},
+        ${productCategoryId},
+        ${shopId}
+        )
+    </insert>
+</mapper>

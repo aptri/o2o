@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title" id="myModalLabel">商铺信息</h4>
+</div>
+<form class="form-horizontal" th:object="${dto}" th:action="@{/shop/shopSave}" method="post" id="addForm"
+      enctype="multipart/form-data">
+    <div class="modal-body">
+        <table class="table-form">
+            <colgroup>
+                <col width="20%">
+                <col width="40%">
+                <col width="40%">
+            </colgroup>
+            <tr height="40px">
+                <td align="right">
+                    商铺名称：
+                </td>
+                <td colspan="2">
+                    <input type="text" class="form-control input-sm" id="shopName" name="shopName"
+                           placeholder="商铺名称">
+                </td>
+            </tr>
+            <tr height="40px">
+                <td align="right">
+                    所属类别：
+                </td>
+                <td colspan="2">
+                    <select class="form-control input-sm" name="shopCategoryId" id="shopCategoryId">
+                        <option value="">--请选择--</option>
+                        <option th:each="category:${shopCategoryList}" th:value="${category.shopCategoryId}"
+                                th:text="${category.shopCategoryName}"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr height="40px">
+                <td align="right">
+                    所在区域：
+                </td>
+                <td colspan="2">
+                    <select class="form-control input-sm" name="areaId" id="areaId">
+                        <option value="">--请选择--</option>
+                        <option th:each="area:${areaList}" th:value="${area.areaId}"
+                                th:text="${area.areaName}"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr height="40px">
+                <td align="right">
+                    详细地址：
+                </td>
+                <td colspan="2">
+                    <input type="text" class="form-control input-sm" id="shopAddr" name="shopAddr"
+                           placeholder="地址">
+                </td>
+            </tr>
+            <tr height="40px">
+                <td align="right">
+                    联系电话：
+                </td>
+                <td colspan="2">
+                    <input type="text" class="form-control input-sm" id="phone" name="phone"
+                           placeholder="电话">
+                </td>
+            </tr>
+            <tr height="40px">
+                <td align="right">
+                    缩略图：
+                </td>
+                <td>
+                    <img src="" id="shop_image" name="shop_image" height="100" width="100">
+                </td>
+                <td>
+                    <input type="file" id="imageFile" name="imageFile" th:onchange="submitUpload()">
+                    <input type="hidden" id="shopImg" name="shopImg" value="">
+                </td>
+            </tr>
+            <tr height="40px">
+                <td align="right">
+                    店铺简介：
+                </td>
+                <td colspan="2">
+                    <textarea id="shopDesc" name="shopDesc" th:width="300" th:height="200"></textarea>
+                </td>
+            </tr>
+            <tr height="40px">
+                <td align="right">
+                    验证码：
+                </td>
+                <td>
+                    <input type="text" class="form-control input-sm" placeholder="验证码" th:height="30" id="captCha_in"
+                           name="captCha_in">
+                </td>
+                <td>
+                    <img src="../Kaptcha" alt="点击更换" title="点击更换" id="captCha_img"
+                         th:onclick="|changeVerifyCode(this);|">
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+<div class="modal-footer" style="text-align: center">
+    <div class="btn-group">
+        <button type="button" id="cancelBtn" class="btn btn-default btn-sm btn-primary" style="margin-right: 3px"
+                data-dismiss="modal">取消
+        </button>
+        <button type="submit" id="saveBtn" class="btn btn-default btn-sm btn-primary" style="margin-left: 3px"
+                th:onclick="|shopSave();|">保存
+        </button>
+    </div>
+</div>
+</html>
+<script th:inline="javascript">
+    function submitUpload() {
+        $("#addForm").ajaxSubmit({
+            type: "post",
+            url: /*[[@{/upload/uploadPic}]]*/"",
+            dataType: "text",
+            success: function (data) {
+                var jsonObject = $.parseJSON(data);
+                $("#shop_image").attr("src", jsonObject.realPath);
+                $("#shopImg").val(jsonObject.relativePath);
+            },
+            error: function () {
+                alert("系统错误");
+            }
+        })
+    }
+
+    function changeVerifyCode(img) {
+        img.src = "../Kaptcha?" + Math.floor(Math.random() * 100);
+    }
+
+    function checkForm() {
+        var shopName = $("#add-modal input[name=shopName]").val();
+        if (shopName == "") {
+            alert("商铺名称不能为空！");
+            $("#add-modal input[name=shopName]").focus();
+            return false;
+        }
+        var shopCategoryId = $("#shopCategoryId").val();
+        if (shopCategoryId == "") {
+            alert("商铺类别不能为空！");
+            $("#shopCategoryId").focus();
+            return false;
+        }
+        var areaId = $("#areaId").val();
+        if (areaId == "") {
+            alert("区域不能为空！");
+            $("#areaId").focus();
+            return false;
+        }
+        var shopAddr = $("#add-modal [name=shopAddr]").val();
+        if (shopAddr == "") {
+            alert("地址能为空！");
+            $("#add-modal [name=shopAddr]").focus();
+            return false;
+        }
+        var phone = $("#add-modal input[name=phone]").val();
+        if (phone == "") {
+            alert("电话不能为空！");
+            $("#add-modal input[name=phone]").focus();
+            return false;
+        }
+        var shopImg = $("#add-modal input[name=shopImg]").val();
+        if (shopImg == "") {
+            alert("图片不能为空！");
+            $("#add-modal input[name=shopImg]").focus();
+            return false;
+        }
+        var captCha_in = $("#add-modal input[name=captCha_in]").val();
+        if (captCha_in == "") {
+            alert("验证码不能为空！");
+            $("#add-modal input[name=captCha_in]").focus();
+            return false;
+        }
+        return true;
+    }
+
+    function shopSave() {
+        if (checkForm()) {
+            $("#add-modal input").attr("disabled", false);
+            $.ajax({
+                type: "POST",
+                url: /*[[@{/shop/shopSave}]]*/"",
+                data: $("#addForm").serialize(),
+                timeout: 10000,
+                success: function (response) {
+                    if ('failure' == response) {
+                        alert(response);
+                    } else {
+                        alert("保存成功！");
+                        window.location.href = "/shop/toShopList";
+                    }
+                }
+            });
+        }
+    }
+</script>

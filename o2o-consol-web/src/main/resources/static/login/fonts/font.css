@@ -1,0 +1,11 @@
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Source Sans Pro'),
+    local('SourceSansPro-Regular'),
+        /* from https://fonts.gstatic.com/s/sourcesanspro/v9/ODelI1aHBYDBqgeIAH2zlN0tugusXa58UbOrParLRF0.eot */ url('Source_Sans_Pro.eot?#iefix') format('embedded-opentype'),
+        /* from https://fonts.gstatic.com/s/sourcesanspro/v9/ODelI1aHBYDBqgeIAH2zlBM0YzuT7MdOe03otPbuUS0.woff */ url('Source_Sans_Pro.woff') format('woff'),
+        /* from https://fonts.gstatic.com/s/sourcesanspro/v9/ODelI1aHBYDBqgeIAH2zlNV_2ngZ8dMf8fLgjYEouxg.woff2 */ url('Source_Sans_Pro.woff2') format('woff2'),
+        /* from https://fonts.gstatic.com/l/font?kit=ODelI1aHBYDBqgeIAH2zlADX0QHsyBtvFGhCuXSMYhM&skey=1e026b1c27170b9b&v=v9#SourceSansPro */ url('Source_Sans_Pro.svg#SourceSansPro') format('svg')
+}

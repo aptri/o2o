@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div id="reg-modal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="jumbo-bg" class="bg" style="background:url(/static/login/image/bg_login.jpg) no-repeat center">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">用户信息注册</h4>
+                </div>
+                <form class="form-signin" th:object="${UserDto}" th:action="@{/user/register}" method="post"
+                      id="regForm">
+                    <div class="modal-body">
+                        <table class="table-form">
+                            <colgroup>
+                                <col width="40%">
+                                <col width="30%">
+                                <col width="30%">
+                            </colgroup>
+                            <tr height="40px">
+                                <td align="left">
+                                    用户名：
+                                </td>
+                                <td colspan="2">
+                                    <input type="text" class="form-control" id="userName" name="userName"
+                                           placeholder="用户名">
+                                </td>
+                            </tr>
+                            <tr height="40px">
+                                <td align="left">
+                                    密码：
+                                </td>
+                                <td colspan="2">
+                                    <input type="password" class="form-control" id="password" name="password"
+                                           placeholder="密码">
+                                </td>
+                            </tr>
+                            <tr height="40px">
+                                <td align="left">
+                                    确认密码：
+                                </td>
+                                <td colspan="2">
+                                    <input type="password" class="form-control" id="confirm"
+                                           placeholder="确认密码">
+                                </td>
+                            </tr>
+                            <tr height="40px">
+                                <td align="left">
+                                    性别：
+                                </td>
+                                <td colspan="2">
+                                    <div>
+                                        <input type="radio" id="genderMan" name="gender" th:value="男" th:text="男"
+                                               checked>
+                                        <input type="radio" id="genderWoman" name="gender" th:value="女" th:text="女">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr height="40px">
+                                <td align="left">
+                                    出生日期：
+                                </td>
+                                <td colspan="2">
+                                    <input type="date" id="birthday" name="birthday" class="form-control input-sm"
+                                           autocomplete="off"/>
+                                </td>
+                            </tr>
+                            <tr height="40px">
+                                <td align="left">
+                                    联系电话：
+                                </td>
+                                <td colspan="2">
+                                    <input type="text" class="form-control input-sm" id="phone" name="phone"
+                                           placeholder="联系电话">
+                                </td>
+                            </tr>
+                            <tr height="40px">
+                                <td align="left">
+                                    邮箱：
+                                </td>
+                                <td colspan="2">
+                                    <input type="email" class="form-control input-sm" id="email" name="email"
+                                           placeholder="邮箱">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
+                <div class="modal-footer" style="text-align: center">
+                    <div class="btn-group">
+                        <button type="button" id="cancelBtn" class="btn btn-default btn-sm btn-primary"
+                                style="margin-right: 3px" data-dismiss="modal">取消
+                        </button>
+                        <button type="submit" id="saveBtn" class="btn btn-default btn-sm btn-primary"
+                                style="margin-left: 3px" th:onclick="|userRegister();|">保存
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>
+<script th:inline="javascript">
+    $("#confirm").blur(function () {
+        var password = $("#password").val();
+        if (password == "") {
+            alert("请先输入密码项！");
+            $("#password").focus();
+            return false;
+        }
+        var conform = $("#confirm").val();
+        if (conform.trim() == "") {
+            alert("请再次输入密码！")
+            // $("#confirm").focus();
+            return false;
+        }
+        if (password != conform) {
+            alert("请与上面的密码输入一致！")
+            // $("#confirm").focus();
+            return false;
+        }
+    });
+
+    function checkForm() {
+        var userName = $("#reg-modal input[name=userName]").val();
+        if (userName == "") {
+            alert("用户名不能为空！");
+            $("#reg-modal input[name=shopName]").focus();
+            return false;
+        }
+        var password = $("#reg-modal [name=password]").val();
+        if (password == "") {
+            alert("密码不能为空！");
+            $("#reg-modal [name=password]").focus();
+            return false;
+        }
+        var confirm = $("#reg-modal [name=confirm]").val();
+        if (confirm == "") {
+            alert("需要再次确认密码！");
+            $("#reg-modal [name=confirm]").focus();
+            return false;
+        }
+        var gender = $("#reg-modal input:radio:checked").val();
+        if (gender == undefined) {
+            alert("请勾选性别选项！");
+            return false;
+        }
+        var birthday = $("#reg-modal input[name=birthday]").val();
+        if (birthday == "") {
+            alert("请补充出生信息！");
+            $("#reg-modal input[name=birthday]").focus();
+            return false;
+        }
+        var phone = $("#reg-modal input[name=phone]").val();
+        if (phone == "") {
+            alert("联系电话不能为空！");
+            $("#reg-modal input[name=phone]").focus();
+            return false;
+        }
+        var email = $("#reg-modal input[name=email]").val();
+        if (email == "") {
+            alert("邮箱不能为空！");
+            $("#reg-modal input[name=email]").focus();
+            return false;
+        }
+        return true;
+    }
+
+    function userRegister() {
+        if (checkForm()) {
+            $("#reg-modal input").attr("disabled", false);
+            $.ajax({
+                type: "POST",
+                url: /*[[@{/user/register}]]*/"",
+                data: $("#regForm").serialize(),
+                timeout: 10000,
+                success: function (response) {
+                    if ('failure' == response) {
+                        alert(response);
+                    } else {
+                        alert("保存成功！");
+                        window.location.href = "/login/toLogin";
+                    }
+                }
+            });
+        }
+    }
+</script>

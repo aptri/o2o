@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="box-header with-border">
+    <h3 class="box-title">查询条件</h3>
+</div>
+<form class="form-horizontal" id="queryForm"
+      th:object="${shopDto}" method="post"
+      th:action="@{/shop/queryShop}">
+    <div class="box-body">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">商铺名称</label>
+                    <div class="col-sm-6">
+                        <input type="text" th:id="shopName" th:name="shopName"
+                               class="form-control input-sm uppercase"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">商铺类别</label>
+                    <div class="col-sm-6">
+                        <select class="form-control input-sm" th:name="shopCategoryId" th:id="shopCategoryId">
+                            <option value="">--请选择--</option>
+                            <option th:each="category:${shopCategoryList}" th:value="${category.shopCategoryId}"
+                                    th:text="${category.shopCategoryName}"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-footer">
+        <div class="btn-group">
+            <button type="submit" class="btn btn-default" aria-label="Left Align">
+                <span class="glyphicon glyphicon glyphicon-search" aria-hidden="true" th:alt="查询"></span>
+            </button>
+            <button type="button" class="btn btn-default" aria-label="Left Align">
+                <span class="glyphicon glyphicon glyphicon-plus-sign" aria-hidden="true"
+                      th:onclick="|showShopAddModal();|" th:alt="新增"></span>
+            </button>
+        </div>
+    </div>
+</form>
+<div class="panel-heading">商铺信息列表</div>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th class="text-center">商铺名称</th>
+            <th class="text-center">商铺图片</th>
+            <th class="text-center">商铺用户</th>
+            <th class="text-center">商铺区域</th>
+            <th class="text-center">商铺类别</th>
+            <th class="text-center">商铺优先级</th>
+            <th class="text-center">商铺当前状态</th>
+            <th class="text-center">商铺地址</th>
+            <th class="text-center">商铺描述</th>
+            <th class="text-center">商铺联系电话</th>
+            <th class="text-center">商铺创建时间</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="shop:${shopList}">
+            <td class="text-center" th:text="${shop.shopId}" th:hidden="hidden">id</td>
+            <td class="text-center" th:text="${shop.shopName}">1,001</td>
+            <td>
+                <img height="50" width="50" th:src="${shop.shopImg}" th:title="商铺图片">
+            </td>
+            <td class="text-center" th:text="${shop.userId}">ipsum</td>
+            <td class="text-center" th:text="${shop.areaId}">dolor</td>
+            <td class="text-center" th:text="${shop.shopCategoryId}">sit</td>
+            <td class="text-center" th:text="${shop.priority}">sit</td>
+            <td class="text-center" th:text="${shop.enableStatus}">sit</td>
+            <td class="text-center" th:text="${shop.shopAddr}">sit</td>
+            <td class="text-center" th:text="${shop.shopDesc}">sit</td>
+            <td class="text-center" th:text="${shop.phone}">sit</td>
+            <td class="text-center" th:text="${shop.createTime}">sit</td>
+            <td class="text-center">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" aria-label="Left Align" th:alt="编辑">
+                        <span class="glyphicon glyphicon glyphicon-edit" aria-hidden="true"
+                              th:onclick="|shopEdit(${shop.shopId});|"></span>
+                    </button>
+                    <button type="button" class="btn btn-default" aria-label="Left Align" th:alt="删除">
+                        <span class="glyphicon glyphicon glyphicon-trash" aria-hidden="true"
+                              th:onclick="|shopDel(${shop.shopId});|"></span>
+                    </button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+<script th:inline="javascript">
+    function showShopAddModal() {
+        $.ajax({
+            type: "POST",
+            url: /*[[@{/shop/toShopAddModal}]]*/"",
+            timeout: 10000,
+            dataType: "html",
+            beforeSend: function () {
+                $("#shopAddView").empty();
+            },
+            success: function (data) {
+                $("#shopAddView").html(data);
+                $("#add-modal").modal("show");
+            }
+        });
+    }
+
+    function shopEdit(shopId) {
+        $.ajax({
+            type: "POST",
+            url: /*[[@{/shop/shopEdit}]]*/"",
+            data: {"shopId": shopId},
+            timeout: 10000,
+            dataType: "html",
+            beforeSend: function () {
+                $("#shopEditView").empty();
+            },
+            success: function (data) {
+                $("#shopEditView").html(data);
+                $("#edit-modal").modal("show");
+            }
+        });
+    }
+
+    function shopDel(shopId) {
+        $.ajax({
+            type: "POST",
+            url: /*[[@{/shop/toShopAdd}]]*/"",
+            data: {"shopId": shopId},
+            timeout: 10000,
+            beforeSend: function () {
+                alert("")
+            },
+            success: function (data) {
+
+            }
+        });
+    }
+</script>

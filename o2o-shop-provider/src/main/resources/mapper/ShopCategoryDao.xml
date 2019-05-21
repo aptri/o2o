@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.o2o.dao.ShopCategoryDao">
+    <!--<resultMap id="resultShopCategoryList" type="com.imooc.o2o.dto.ShopCategoryDto">-->
+        <!--<id column="shop_category_id" property="shopCategoryId"></id>-->
+        <!--<result column="SHOP_CATEGORY_NAME" property="shopCategoryName"></result>-->
+        <!--<result column="SHOP_CATEGORY_DESC" property="shopCategoryDesc"></result>-->
+        <!--<result column="SHOP_CATEGORY_IMG" property="shopCategoryImg"></result>-->
+        <!--<result column="PRIORITY" property="priority"></result>-->
+        <!--<result column="CREATE_TIME" property="createTime"></result>-->
+        <!--<result column="LAST_EDIT_TIME" property="lastEditTime"></result>-->
+        <!--<result column="PARENT_ID" property="shopCategoryParentId"></result>-->
+    <!--</resultMap>-->
+    <select id="queryShopCategory" resultType="com.imooc.o2o.dto.ShopCategoryDto">
+        select
+        SHOP_CATEGORY_ID,SHOP_CATEGORY_NAME,SHOP_CATEGORY_DESC,SHOP_CATEGORY_IMG,PRIORITY,CREATE_TIME,LAST_EDIT_TIME,PARENT_ID
+        from T_SHOP_CATEGORY t
+    </select>
+    <select id="queryCategoryNoParent" resultType="com.imooc.o2o.dto.ShopCategoryDto">
+        select
+        SHOP_CATEGORY_ID,SHOP_CATEGORY_NAME,SHOP_CATEGORY_DESC,SHOP_CATEGORY_IMG,PRIORITY,CREATE_TIME,LAST_EDIT_TIME,PARENT_ID
+        from T_SHOP_CATEGORY t where t.PARENT_ID is null
+    </select>
+    <select id="queryCategoryParentNotNull" resultType="com.imooc.o2o.dto.ShopCategoryDto">
+        select
+        SHOP_CATEGORY_ID,SHOP_CATEGORY_NAME,SHOP_CATEGORY_DESC,SHOP_CATEGORY_IMG,PRIORITY,CREATE_TIME,LAST_EDIT_TIME,PARENT_ID
+        from T_SHOP_CATEGORY t where t.PARENT_ID is not null
+    </select>
+    <select id="queryCategoryById" parameterType="Integer" resultType="com.imooc.o2o.dto.ShopCategoryDto">
+        select
+        SHOP_CATEGORY_ID,SHOP_CATEGORY_NAME,SHOP_CATEGORY_DESC,SHOP_CATEGORY_IMG,PRIORITY,CREATE_TIME,LAST_EDIT_TIME,PARENT_ID
+        from T_SHOP_CATEGORY t where t.SHOP_CATEGORY_ID = #{categoryId}
+    </select>
+    <insert id="insertShopCategory" parameterType="com.imooc.o2o.dto.ShopCategoryDto" keyColumn="shop_category_id">
+        <selectKey keyProperty="shopCategoryId" resultType="Integer" order="BEFORE">
+            select shop_category_sequence.nextval from dual
+        </selectKey>
+        insert into
+        t_shop_category(
+        SHOP_CATEGORY_ID,
+        SHOP_CATEGORY_NAME,
+        SHOP_CATEGORY_DESC,
+        SHOP_CATEGORY_IMG,
+        PRIORITY,
+        CREATE_TIME,
+        LAST_EDIT_TIME,
+        PARENT_ID)
+        values (
+        ${shopCategoryId},
+        #{shopCategoryName},
+        #{shopCategoryDesc},
+        #{shopCategoryImg},
+        #{priority},
+        #{createTime,jdbcType=TIMESTAMP},
+        #{lastEditTime,jdbcType=TIMESTAMP},
+        #{parentId,jdbcType=INTEGER})
+    </insert>
+</mapper>

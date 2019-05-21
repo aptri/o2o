@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.o2o.dao.ShopDao">
+    <!--<resultMap id="resultShopList" type="com.imooc.o2o.dto.ShopDto">-->
+    <!--<id column="shop_id" property="shopId"></id>-->
+    <!--<result column="SHOP_NAME" property="shopName"></result>-->
+    <!--<result column="SHOP_DESC" property="shopDesc"></result>-->
+    <!--<result column="SHOP_ADDR" property="shopAddr"></result>-->
+    <!--<result column="PHONE" property="phone"></result>-->
+    <!--<result column="SHOP_IMG" property="shopImg"></result>-->
+    <!--<result column="LONGITUDE" property="longitude"></result>-->
+    <!--<result column="LATITUDE" property="latitude"></result>-->
+    <!--<result column="PRIORITY" property="priority"></result>-->
+    <!--<result column="ENABLE_STATUS" property="enableStatus"></result>-->
+    <!--<result column="ADVICE" property="advice"></result>-->
+    <!--<result column="USER_ID" property="userId"></result>-->
+    <!--<result column="area_id" property="areaId"></result>-->
+    <!--<result column="shop_category_id" property="shopCategoryId"></result>-->
+    <!--</resultMap>-->
+    <select id="queryShopList" resultType="com.imooc.o2o.dto.ShopDto">
+        select
+        shop_id,shop_name,shop_desc,shop_addr,phone,shop_img,priority,enable_status,create_time,last_edit_time,advice,user_id,shop_category_id,area_id,PARENT_CATEGORY_ID
+        from t_shop
+    </select>
+    <select id="queryShopByCategoryId" parameterType="Integer" resultType="com.imooc.o2o.dto.ShopDto">
+        select
+        shop_id,shop_name,shop_desc,shop_addr,phone,shop_img,priority,enable_status,create_time,last_edit_time,advice,user_id,shop_category_id,area_id,PARENT_CATEGORY_ID
+        from t_shop t where t.PARENT_CATEGORY_ID=${categoryId}
+    </select>
+    <select id="queryShopById" parameterType="Integer" resultType="com.imooc.o2o.dto.ShopDto">
+        select
+        shop_id,shop_name,shop_desc,shop_addr,phone,shop_img,priority,enable_status,create_time,last_edit_time,advice,user_id,shop_category_id,area_id
+        from t_shop t where t.shop_id=${shopId}
+    </select>
+    <insert id="insertShop" parameterType="com.imooc.o2o.dto.ShopDto" keyColumn="shop_id">
+        <selectKey keyProperty="shopId" resultType="Integer" order="BEFORE">
+            select shop_sequence.nextval from dual
+        </selectKey>
+        insert into
+        t_shop(
+        shop_id,
+        shop_name,
+        shop_desc,
+        shop_addr,
+        phone,
+        shop_img,
+        priority,
+        enable_status,
+        create_time,
+        last_edit_time,
+        advice,
+        user_id,
+        shop_category_id,
+        area_id)
+        values (
+        ${shopId},
+        #{shopName},
+        #{shopDesc},
+        #{shopAddr},
+        #{phone},
+        #{shopImg},
+        ${priority},
+        ${enableStatus},
+        #{createTime,jdbcType=TIMESTAMP},
+        #{lastEditTime,jdbcType=TIMESTAMP},
+        #{advice},
+        ${userId},
+        ${shopCategoryId},
+        ${areaId})
+    </insert>
+</mapper>
